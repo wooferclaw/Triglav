@@ -11,7 +11,12 @@ namespace Triglav
 
         public MessageContent MakeMention(MessageContent message)
         {
-            throw new NotImplementedException();
+            //check for null and convert all the non null fields to appropriate messagecontent
+            //
+            //{
+            //    throw new ArgumentException("No short name available for the platform");
+            //}
+            return null;
         }
 
         public MessageContent MakeAddressing(MessageContent message)

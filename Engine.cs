@@ -8,7 +8,9 @@ namespace Triglav
         {
             Alice,
             Alexa,
-            Telegram
+            Telegram,
+            VK,
+            Facebook
         }
 
         public Engine(Layer[] layers)
@@ -16,8 +18,9 @@ namespace Triglav
             throw new NotImplementedException();
         }
 
-        public bool CheckCommand(Command income, CommandContent expected)
+        public bool CheckCommand(Command incoming, CommandContent expected)
         {
+            //Алгоритм проверки входящих данных от пользователя
             throw new NotImplementedException();
         }
 
@@ -28,6 +31,7 @@ namespace Triglav
 
         public Command ParseCommand(string jsonBody, Layer layer)
         {
+
             throw new NotImplementedException();
         }
     }
