@@ -11,7 +11,8 @@ namespace Triglav
 
         public MessageContent MakeMention(MessageContent message)
         {
-            //check for null and convert all the non null fields to appropriate messagecontent
+
+            //check for null and convert all the non null fields to appropriate message_content
             //
             //{
             //    throw new ArgumentException("No short name available for the platform");

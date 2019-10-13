@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Triglav.Layers
 {
@@ -78,6 +79,11 @@ namespace Triglav.Layers
             public Request request { get; set; }
             public Session session { get; set; }
             public string version { get; set; }
+        }
+        public bool CheckCommand(Command incoming, CommandContent expected)
+        {
+            //Алгоритм проверки входящих данных от пользователя
+            throw new NotImplementedException();
         }
 
     }

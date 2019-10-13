@@ -50,6 +50,13 @@ namespace Triglav.Layers
                 public string Url { get; set; }
                 public User User { get; set; }
             }
+
+            public bool CheckCommand(Command incoming, CommandContent expected)
+            {
+                //Алгоритм проверки входящих данных от пользователя
+                throw new NotImplementedException();
+            }
+
         }
     }
 }

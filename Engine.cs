@@ -18,12 +18,6 @@ namespace Triglav
             throw new NotImplementedException();
         }
 
-        public bool CheckCommand(Command incoming, CommandContent expected)
-        {
-            //Алгоритм проверки входящих данных от пользователя
-            throw new NotImplementedException();
-        }
-
         public void SendMessage(Message message)
         {
             throw new NotImplementedException();

@@ -4,21 +4,19 @@ namespace Triglav
 {
     public class CommandContent
     {
-        public string Command { get; set; }
+        public string Text { get; set; }
         public string Payload { get; set; }
-
         //Constructor?
         public AliceCommandContent AliceCommand { get; set; }
         public TelegramCommandContent TelegramCommand { get; set; }
 
-        public void For(AliceCommandContent data)
+        public void For(AliceCommandContent command)
         {
-            
+            AliceCommand = command;
         }
-        public void For(TelegramCommandContent data)
+        public void For(TelegramCommandContent command)
         {
-
+            TelegramCommand = command;
         }
-        
     }
 }
