@@ -7,9 +7,10 @@ namespace Triglav
         public string Command { get; set; }
         public string Payload { get; set; }
 
-        //И хранить его где-то внутри.А конструктор с полями которые одинаковы везде (текст, кнопки)
+        //Constructor?
         public AliceCommandContent AliceCommand { get; set; }
         public TelegramCommandContent TelegramCommand { get; set; }
+
         public void For(AliceCommandContent data)
         {
             
