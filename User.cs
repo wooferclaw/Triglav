@@ -29,14 +29,14 @@ namespace Triglav
             return this;
         }
 
-        public User FromAlexa(AlexaUser user)
-        {
-            Id = user.Id;
-            Name = "";
-            Domain = "";
+        //public User FromAlexa(AlexaUser user)
+        //{
+        //    Id = user.Id;
+        //    Name = "";
+        //    Domain = "";
 
-            return this;
-        }
+        //    return this;
+        //}
         public MessageContent MakeMention(MessageContent message)
         {
 

@@ -65,7 +65,6 @@ namespace Triglav.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string LanguageCode { get; set; }
-        public override bool Equals(object obj) => Equals(obj as User);
         public override string ToString() => (Username == null
                                                  ? FirstName + LastName?.Insert(0, " ")
                                                  : $"@{Username}") +
