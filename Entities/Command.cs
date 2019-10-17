@@ -76,11 +76,13 @@ namespace Triglav.Entities
         {
             if (AliceCommand != null)
             {
+                if (content.IsEnter) return string.IsNullOrEmpty(AliceCommand.Command);
                 return AliceCommand.Check(content);
             }
 
-            if (content.TelegramCommandContent != null)
+            if (TelegramCommand != null)
             {
+                if (content.IsEnter) return Text.StartsWith("/start");
                 return Payload == content.Payload || Text == content.Text;
             }
 

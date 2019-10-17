@@ -6,7 +6,7 @@ namespace Triglav.Entities
     {
         public string Text { get; set; }
         public string Payload { get; set; }
-        //Constructor?
+        public bool IsEnter { get; set; }
         public AliceCommandContent AliceCommandContent { get; set; }
         public TelegramCommandContent TelegramCommandContent { get; set; }
 
