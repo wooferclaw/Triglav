@@ -7,19 +7,20 @@ namespace Triglav.Entities
     {
         public string Text { get; set; }
         public string Picture { get; set; }
-        public List<string> Buttons { get; set; }
+        public string[] Buttons { get; set; }
         public bool InlineButtons { get; set; }
 
-        public AliceMessageContent AliceMessage {get;set;}
-        public TelegramMessageContent TelegramMessage { get; set; }
+
+        public AliceMessageContent AliceMessageContent {get;set;}
+        public TelegramMessageContent TelegramMessageContent { get; set; }
 
         public void For(AliceMessageContent content)
         {
-            AliceMessage = content;
+            AliceMessageContent = content;
         }
         public void For(TelegramMessageContent content)
         {
-            TelegramMessage = content;
+            TelegramMessageContent = content;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Triglav.Models
         public string Method { get; set; } = "sendMessage";
         public int ChatId { get; set; }
         public string Text { get; set; }
-        public string ParseMode { get; set; }
+        public string ParseMode { get; set; } 
         public bool DisableWebPagePreview { get; set; }
         public bool DisableNotifications { get; set; }
         public int ReplyToMessageId { get; set; }

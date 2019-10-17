@@ -17,27 +17,44 @@ namespace Triglav.Entities
         public TelegramCommand TelegramCommand { get; set; }
         
 
-        public Command From(Engine.Layer layer, string body)
+        public Command(Engine.Layer layer, string body)
         {
-            return layer switch
+            switch (layer)
             {
-                Engine.Layer.Telegram => FromTelegram(body),
-                Engine.Layer.Alice => FromAlice(body),
-                Engine.Layer.Alexa => FromAlexa(body),
-                _ => throw new ArgumentException("This layer type is not supported")
-            };
-        }
+                case Engine.Layer.Alice:
+                    FromAlice(body);
+                    break;
+                case Engine.Layer.Alexa:
+                    FromAlexa(body);
+                    break;
+                case Engine.Layer.Telegram:
+                    FromTelegram(body);
+                    break;
+                case Engine.Layer.VK:
+                    throw new NotImplementedException();
+                    break;
+                case Engine.Layer.Facebook:
+                    throw new NotImplementedException();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(layer), layer, null);
+            }
 
-        private Command FromTelegram(string body)
+        }
+        //make from static or ctor
+        private void FromTelegram(string body)
         {
+            
             TelegramUpdate update = JsonConvert.DeserializeObject<TelegramUpdate>(body,Utils.ConverterSettings);
+
             switch (update.Type)
             {
                 case UpdateType.Message:
                     Id = update.Message.MessageId.ToString();
                     Text = update.Message.Text;
                     Payload = "";
-                    User = User.FromTelegram(update.Message.From);
+                    User = new User(update.Message.From);
+                    TelegramCommand = new TelegramCommand(update.Message);
 
                     break;
 
@@ -45,7 +62,8 @@ namespace Triglav.Entities
                     Id = update.CallbackQuery.Message.MessageId.ToString();
                     Text = "";
                     Payload = update.CallbackQuery.Data;
-                    User = User.FromTelegram(update.CallbackQuery.From);
+                    User = new User(update.CallbackQuery.From);
+                    TelegramCommand = new TelegramCommand(update.Message);
 
                     break;
 
@@ -53,19 +71,17 @@ namespace Triglav.Entities
                     throw new ArgumentException("This update type is not supported");
                 
             }
-            return this;
+            
         }
 
-        private Command FromAlice(string body)
+        private void FromAlice(string body)
         {
             AliceRequest request = JsonConvert.DeserializeObject<AliceRequest>(body, Utils.ConverterSettings);
             Id = request.Session.MessageId.ToString();
-            User = User.FromAlice(request.Session);
+            User = new User(request.Session);
             Text = request.Request.OriginalUtterance;
             Payload = JsonConvert.SerializeObject(request.Request.Payload,Utils.ConverterSettings);
             AliceCommand = new AliceCommand(request);
-
-            return this;
         }
         private Command FromAlexa(string body)
         {

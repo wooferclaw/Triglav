@@ -11,22 +11,18 @@ namespace Triglav
         public string Name { get; set; }
         public string Domain { get; set; }
 
-        public User FromAlice(AliceSession session)
+        public User(AliceSession session)
         {
             Id = session.UserId;
             Name = "";
             Domain = "";
-
-            return this;
         }
 
-        public User FromTelegram(TgUser user)
+        public User(TgUser user)
         {
             Id = user.Id.ToString();
             Name = user.FirstName + " " + user.LastName;
             Domain = user.Username;
-
-            return this;
         }
 
         //public User FromAlexa(AlexaUser user)

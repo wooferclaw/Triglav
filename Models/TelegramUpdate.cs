@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Triglav.Models
 {
@@ -27,6 +29,7 @@ namespace Triglav.Models
     {
         public int MessageId { get; set; }
         public TgUser From { get; set; }
+        [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime Date { get; set; }
         public Chat Chat { get; set; }
         public bool IsForwarded => ForwardFrom != null;

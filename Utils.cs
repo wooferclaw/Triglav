@@ -12,8 +12,9 @@ namespace Triglav
         {
             ContractResolver = new DefaultContractResolver
             {
-                NamingStrategy = new SnakeCaseNamingStrategy()
-            }
+                NamingStrategy = new SnakeCaseNamingStrategy(),
+            },
+            NullValueHandling = NullValueHandling.Ignore
         };
         public static int LevenshteinDistance(string a, string b)
         {

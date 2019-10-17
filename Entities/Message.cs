@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Triglav.Layers;
 using Triglav.Models;
 
 namespace Triglav.Entities
@@ -11,18 +10,15 @@ namespace Triglav.Entities
     {
         public User User { get; set; }
         public MessageContent Content { get; set; }
-        public Message(MessageContent messageContent, User user)
+
+        public Message(MessageContent messageContent, User user, Command command = null)
         {
             User = user;
+            Command = command;
             Content = messageContent;
         }
 
         private Command Command { get; set; }
-
-        public Message(Command command)
-        {
-            Command = command;
-        }
 
         public string As(Engine.Layer layer)
         {
@@ -44,13 +40,16 @@ namespace Triglav.Entities
                 Response = new Response()
                 {
                     Text = Content.Text,
-                    Tts = Content.AliceMessage.Tts,
                     Buttons = new List<Button>(),
-                    EndSession = Content.AliceMessage.EndSession
                 },
                 Session = Command.AliceCommand.Session,
                 Version = Command.AliceCommand.Version
             };
+            if (Content.AliceMessageContent != null)
+            {
+                response.Response.Tts = Content.AliceMessageContent.Tts;
+                response.Response.EndSession = Content.AliceMessageContent.EndSession;
+            }
 
             if (Content.Buttons != null)
             {
@@ -66,27 +65,42 @@ namespace Triglav.Entities
 
         private string AsTelegram()
         {
+            
             var response = new TelegramSendMessage()
             {
                 Method = "sendMessage",
                 ChatId = int.Parse(User.Id),
                 Text = Content.Text,
-                ParseMode = Content.TelegramMessage.ParseMode,
             };
 
-            if (Command!= null)
-                response.ReplyToMessageId = int.Parse(Command.Id);
-
             var buttons = new List<List<string>>();
-            var c = 0;
-            foreach (var row in Content.TelegramMessage.ButtonsByRows)
+
+            if (Content.TelegramMessageContent != null)
+                response.ParseMode = Content.TelegramMessageContent.ParseMode;
+
+            //if (Command!= null)
+            //    response.ReplyToMessageId = int.Parse(Command.Id);
+            if (buttons != null && buttons.Count != 0)
             {
-                buttons.Add(new List<string>());
-                for (int i = 0; i < row; i++)
-                { 
-                    buttons.Last().Add(Content.Buttons[c++]);
+                if (Content.TelegramMessageContent?.ButtonsByRows != null)
+                {
+                    var c = 0;
+                    foreach (var row in Content.TelegramMessageContent.ButtonsByRows)
+                    {
+                        buttons.Add(new List<string>());
+                        for (int i = 0; i < row; i++)
+                        {
+                            buttons.Last().Add(Content.Buttons[c++]);
+                        }
+                    }
+                }
+                else
+                {
+                    buttons.Add(Content.Buttons.ToList());
                 }
             }
+            
+
 
             if (Content.InlineButtons)
                 response.ReplyMarkup = new InlineKeyboardMarkup(buttons.Select(x => x.Select(y =>
