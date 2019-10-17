@@ -5,13 +5,14 @@ namespace Triglav.Models
 {
     public class TelegramSendMessage
     {
-        public string Method { get; set; }
+        public string Method { get; set; } = "sendMessage";
         public int ChatId { get; set; }
         public string Text { get; set; }
         public string ParseMode { get; set; }
         public bool DisableWebPagePreview { get; set; }
         public bool DisableNotifications { get; set; }
         public int ReplyToMessageId { get; set; }
+        public ReplyMarkupBase ReplyMarkup { get; set; }
     }
     public abstract class ReplyMarkupBase 
     {
@@ -63,7 +64,7 @@ namespace Triglav.Models
                         texts.Select(t => new KeyboardButton(t))
                     ));
     }
-    public class InlineKeyboardMarkup : IReplyMarkup
+    public class InlineKeyboardMarkup : ReplyMarkupBase
     {
         public IEnumerable<IEnumerable<InlineKeyboardButton>> InlineKeyboard { get; }
         public InlineKeyboardMarkup(InlineKeyboardButton inlineKeyboardButton)
@@ -154,7 +155,6 @@ namespace Triglav.Models
                 ? default
                 : WithCallbackData(textAndCallbackData);
     }
-
     public class KeyboardButton 
     {
         public string Text { get; set; }
