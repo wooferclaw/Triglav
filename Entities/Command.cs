@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Newtonsoft.Json;
 using Triglav.Layers;
 using Triglav.Models;

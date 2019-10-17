@@ -16,6 +16,12 @@ namespace Triglav
             },
             NullValueHandling = NullValueHandling.Ignore
         };
+
+        public static bool IsNullOrEmpty(this string s)
+        {
+            return string.IsNullOrEmpty(s);
+        }
+        
         public static int LevenshteinDistance(string a, string b)
         {
             if (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b))

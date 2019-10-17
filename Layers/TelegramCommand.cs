@@ -1,5 +1,4 @@
-﻿using Triglav.Entities;
-using Triglav.Models;
+﻿using Triglav.Models;
 using Message = Triglav.Models.Message;
 
 namespace Triglav.Layers

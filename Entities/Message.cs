@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Triglav.Layers;
 using Triglav.Models;
 
 namespace Triglav.Entities
@@ -74,21 +75,24 @@ namespace Triglav.Entities
             };
 
             var buttons = new List<List<string>>();
+            var telegramMessageContent = Content.TelegramMessageContent ?? new TelegramMessageContent();
 
-            if (Content.TelegramMessageContent != null)
-                response.ParseMode = Content.TelegramMessageContent.ParseMode;
+            if (!telegramMessageContent.ParseMode.IsNullOrEmpty())
+            {
+                response.ParseMode = telegramMessageContent.ParseMode;
+            }
 
             //if (Command!= null)
             //    response.ReplyToMessageId = int.Parse(Command.Id);
-            if (buttons != null && buttons.Count != 0)
+            if (Content.Buttons != null && Content.Buttons.Length != 0)
             {
-                if (Content.TelegramMessageContent?.ButtonsByRows != null)
+                if (telegramMessageContent.ButtonsByRows != null)
                 {
                     var c = 0;
-                    foreach (var row in Content.TelegramMessageContent.ButtonsByRows)
+                    foreach (var row in telegramMessageContent.ButtonsByRows)
                     {
                         buttons.Add(new List<string>());
-                        for (int i = 0; i < row; i++)
+                        for (var i = 0; i < row; i++)
                         {
                             buttons.Last().Add(Content.Buttons[c++]);
                         }
@@ -99,9 +103,8 @@ namespace Triglav.Entities
                     buttons.Add(Content.Buttons.ToList());
                 }
             }
-            
 
-
+            // create keyboards
             if (Content.InlineButtons)
                 response.ReplyMarkup = new InlineKeyboardMarkup(buttons.Select(x => x.Select(y =>
                         new InlineKeyboardButton
@@ -122,10 +125,13 @@ namespace Triglav.Entities
                         }
                     )
                 ));
-            }    
+
+                ((ReplyKeyboardMarkup) response.ReplyMarkup).OneTimeKeyboard = telegramMessageContent.OneTimeKeyboard;
+            }
 
             return JsonConvert.SerializeObject(response, Utils.ConverterSettings);
         }
+        
         private string AsAlexa()
         {
             throw new NotImplementedException();

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Triglav.Entities;
 
 namespace Triglav.Layers
 {
