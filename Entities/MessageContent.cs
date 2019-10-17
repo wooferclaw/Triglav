@@ -6,13 +6,12 @@ namespace Triglav.Entities
     public class MessageContent
     {
         public string Text { get; set; }
-
         public string Picture { get; set; }
-
         public List<string> Buttons { get; set; }
+        public bool InlineButtons { get; set; }
 
-        private AliceMessageContent AliceMessage {get;set;}
-        private TelegramMessageContent TelegramMessage { get; set; }
+        public AliceMessageContent AliceMessage {get;set;}
+        public TelegramMessageContent TelegramMessage { get; set; }
 
         public void For(AliceMessageContent content)
         {

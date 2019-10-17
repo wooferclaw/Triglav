@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Triglav.Entities;
+using Triglav.Models;
 
 namespace Triglav.Layers
 {
@@ -7,14 +9,19 @@ namespace Triglav.Layers
         public string Command { get; set; }
         public List<string> Tokens { get; set; }
         public AliceSession Session { get; set; }
-    }
+        public string Version { get; set; }
 
-    public class AliceSession
-    {
-        public bool New { get; set; }
-        public int MessageId { get; set; }
-        public string SessionId { get; set; }
-        public string SkillId { get; set; }
-        public string UserId { get; set; }
+        public AliceCommand(AliceRequest request)
+        {
+            Command = request.Request.Command;
+            Tokens = request.Request.Nlu.Tokens;
+            Session = request.Session;
+            Version = request.Version;
+        }
+
+        public bool Check(CommandContent content)
+        {
+            return Utils.CheckTokens(Tokens, content.AliceCommandContent.Keywords.ToArray());
+        }
     }
 }

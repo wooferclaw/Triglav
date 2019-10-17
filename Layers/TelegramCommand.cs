@@ -1,9 +1,20 @@
-﻿namespace Triglav.Layers
+﻿using Triglav.Entities;
+using Triglav.Models;
+using Message = Triglav.Models.Message;
+
+namespace Triglav.Layers
 {
     public class TelegramCommand
     {
-        public string ParseMode { get; set; }
-        public int ReplyToMessageId { get; set; }
-    }
+        public TelegramCommand(Message message)
+        {
+
+        }
+
+        public TelegramCommand(CallbackQuery query)
+        {
+
+        }
+        
 
 }

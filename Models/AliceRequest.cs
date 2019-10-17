@@ -53,7 +53,7 @@ namespace Triglav.Models
         public Nlu Nlu { get; set; }
     }
 
-    public class Session
+    public class AliceSession
     {
         public bool New { get; set; }
         public int MessageId { get; set; }
@@ -66,7 +66,7 @@ namespace Triglav.Models
     {
         public Meta Meta { get; set; }
         public Request Request { get; set; }
-        public Session Session { get; set; }
+        public AliceSession Session { get; set; }
         public string Version { get; set; }
     }
 }

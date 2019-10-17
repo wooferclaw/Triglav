@@ -2,7 +2,7 @@
 {
     public class AliceMessageContent
     {
-        private string Tts { get; set; }
-
+        public string Tts { get; set; }
+        public bool EndSession { get; set; }
     }
 }

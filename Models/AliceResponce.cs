@@ -2,8 +2,6 @@
 
 namespace Triglav.Models
 {
-    public class AliceResponce
-    {
         public class Button
         {
             public string Title { get; set; }
@@ -23,14 +21,7 @@ namespace Triglav.Models
         public class AliceResponse
         {
             public Response Response { get; set; } = new Response();
-            public Session Session { get; set; }
+            public AliceSession Session { get; set; }
             public string Version { get; set; }
-
-            public AliceResponse(AliceRequest request)
-            {
-                Session = request.Session;
-                Version = request.Version;
-            }
-        }
     }
 }
