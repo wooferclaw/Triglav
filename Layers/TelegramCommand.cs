@@ -15,6 +15,5 @@ namespace Triglav.Layers
         {
 
         }
-        
-
+    }
 }
