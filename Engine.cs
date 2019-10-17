@@ -1,4 +1,5 @@
 ﻿using System;
+using Triglav.Entities;
 
 namespace Triglav
 {
