@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Triglav.Models
+namespace Triglav.Models.Telegram
 {
     public class TelegramUpdate
     {

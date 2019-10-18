@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Triglav.Layers;
-using Triglav.Models;
+using Triglav.Layers.Telegram;
+using Triglav.Models.Alexa;
+using Triglav.Models.Alice;
+using Triglav.Models.Telegram;
 
 namespace Triglav.Entities
 {
@@ -29,7 +31,7 @@ namespace Triglav.Entities
             {
                 Layer.Telegram => AsTelegram(locale),
                 Layer.Alice => AsAlice(),
-                Layer.Alexa => AsAlexa(),
+                Layer.Alexa => AsAlexa(locale),
                 _ => throw new ArgumentOutOfRangeException(nameof(layer), "This layer type is not supported")
             };
         }
@@ -43,7 +45,7 @@ namespace Triglav.Entities
 
             var response = new AliceResponse
             {
-                Response = new Response()
+                Response = new Models.Alice.Response()
                 {
                     Text = Content.Text[Locale.Ru],
                     Buttons = new List<Button>(),
@@ -66,7 +68,7 @@ namespace Triglav.Entities
                 }).ToList();
             }
 
-            return JsonConvert.SerializeObject(response, Utils.ConverterSettings);
+            return JsonConvert.SerializeObject(response, Utils.ConverterSettingsSnake);
         }
 
         private string AsTelegram(Locale locale)
@@ -134,13 +136,35 @@ namespace Triglav.Entities
                 ((ReplyKeyboardMarkup) response.ReplyMarkup).OneTimeKeyboard = telegramMessageContent.OneTimeKeyboard;
             }
 
-            return JsonConvert.SerializeObject(response, Utils.ConverterSettings);
-        }
-        
-        private string AsAlexa()
-        {
-            throw new NotImplementedException();
+            return JsonConvert.SerializeObject(response, Utils.ConverterSettingsSnake);
         }
 
+        private string AsAlexa(Locale locale)
+        {
+            var response = new AlexaResponse
+            {
+                Response = new Models.Alexa.Response()
+            };
+
+            OutputSpeech outputSpeech;
+
+            outputSpeech = Content.AlexaMessageContent.Ssml != null ?
+                new OutputSpeech {Type = "SSML", SSML = Content.AlexaMessageContent.Ssml} :
+                new OutputSpeech { Type = "PlainText", Text = Content.Text[locale]};
+
+            if (Content.AlexaMessageContent.Reprompt)
+            {
+                response.Response.Reprompt = new Reprompt {OutputSpeech = outputSpeech};
+            }
+            else
+            {
+                response.Response.OutputSpeech = outputSpeech;
+            }
+
+            response.Version = Command.AlexaCommand.Version;
+            response.Response.ShouldEndSession = Content.AlexaMessageContent.ShouldEndSession;
+
+            return JsonConvert.SerializeObject(response, Utils.ConverterSettingsCamel); 
+        }
     }
 }

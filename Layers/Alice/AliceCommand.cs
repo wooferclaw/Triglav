@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Triglav.Entities;
-using Triglav.Models;
+using Triglav.Models.Alice;
 
-namespace Triglav.Layers
+namespace Triglav.Layers.Alice
 {
     public class AliceCommand
     {

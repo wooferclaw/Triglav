@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Triglav.Models
+namespace Triglav.Models.Alice
 {
     public class Screen
     {

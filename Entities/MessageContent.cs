@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
-using Triglav.Layers;
+using Triglav.Layers.Alexa;
+using Triglav.Layers.Alice;
+using Triglav.Layers.Telegram;
 
 namespace Triglav.Entities
 {
@@ -10,6 +12,7 @@ namespace Triglav.Entities
         public bool InlineButtons { get; set; }
 
         public AliceMessageContent AliceMessageContent { get; set; }
+        public AlexaMessageContent AlexaMessageContent { get; set; }
         public TelegramMessageContent TelegramMessageContent { get; set; }
     }
 }

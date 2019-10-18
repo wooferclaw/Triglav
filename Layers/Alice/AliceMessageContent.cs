@@ -1,4 +1,4 @@
-﻿namespace Triglav.Layers
+﻿namespace Triglav.Layers.Alice
 {
     public class AliceMessageContent
     {

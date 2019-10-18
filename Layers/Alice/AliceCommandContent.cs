@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Triglav.Layers
+namespace Triglav.Layers.Alice
 {
     public class AliceCommandContent
     {

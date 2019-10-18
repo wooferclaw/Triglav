@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Triglav.Models
+namespace Triglav.Models.Telegram
 {
     public class TelegramSendMessage
     {

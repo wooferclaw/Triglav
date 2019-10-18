@@ -1,7 +1,7 @@
-﻿using Triglav.Models;
-using Message = Triglav.Models.Message;
+﻿using Triglav.Models.Telegram;
+using Message = Triglav.Models.Telegram.Message;
 
-namespace Triglav.Layers
+namespace Triglav.Layers.Telegram
 {
     public class TelegramCommand
     {

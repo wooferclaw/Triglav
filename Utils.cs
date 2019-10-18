@@ -8,11 +8,20 @@ namespace Triglav
 {
     public static class Utils
     {
-        public static readonly JsonSerializerSettings ConverterSettings = new JsonSerializerSettings
+        public static readonly JsonSerializerSettings ConverterSettingsSnake = new JsonSerializerSettings
         {
             ContractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new SnakeCaseNamingStrategy(),
+            },
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
+        public static readonly JsonSerializerSettings ConverterSettingsCamel = new JsonSerializerSettings
+        {
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(),
             },
             NullValueHandling = NullValueHandling.Ignore
         };

@@ -1,5 +1,6 @@
 ﻿using System;
-using Triglav.Models;
+using Triglav.Models.Alice;
+using Triglav.Models.Telegram;
 
 namespace Triglav.Entities
 {
@@ -23,14 +24,12 @@ namespace Triglav.Entities
             Domain = user.Username;
         }
 
-        //public User FromAlexa(AlexaUser user)
-        //{
-        //    Id = user.Id;
-        //    Name = "";
-        //    Domain = "";
-
-        //    return this;
-        //}
+        public User(Models.Alexa.User user)
+        {
+            Id = user.UserId;
+            Name = "";
+            Domain = "";
+        }
         public MessageContent MakeMention(MessageContent message)
         {
 

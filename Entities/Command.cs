@@ -1,7 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Triglav.Layers;
-using Triglav.Models;
+using Triglav.Layers.Alexa;
+using Triglav.Layers.Alice;
+using Triglav.Layers.Telegram;
+using Triglav.Models.Alexa;
+using Triglav.Models.Alice;
+using Triglav.Models.Telegram;
 
 namespace Triglav.Entities
 {
@@ -13,6 +17,7 @@ namespace Triglav.Entities
         public string Payload { get; set; }
 
         public AliceCommand AliceCommand { get; set; }
+        public AlexaCommand AlexaCommand { get; set; }
         public TelegramCommand TelegramCommand { get; set; }
         
         public Command(Layer layer, string body)
@@ -40,7 +45,7 @@ namespace Triglav.Entities
         //make from static or ctor
         private void FromTelegram(string body)
         {
-            TelegramUpdate update = JsonConvert.DeserializeObject<TelegramUpdate>(body, Utils.ConverterSettings);
+            TelegramUpdate update = JsonConvert.DeserializeObject<TelegramUpdate>(body, Utils.ConverterSettingsSnake);
 
             switch (update.Type)
             {
@@ -71,17 +76,23 @@ namespace Triglav.Entities
 
         private void FromAlice(string body)
         {
-            AliceRequest request = JsonConvert.DeserializeObject<AliceRequest>(body, Utils.ConverterSettings);
+            AliceRequest request = JsonConvert.DeserializeObject<AliceRequest>(body, Utils.ConverterSettingsSnake);
             Id = request.Session.MessageId.ToString();
             User = new User(request.Session);
             Text = request.Request.OriginalUtterance;
-            Payload = JsonConvert.SerializeObject(request.Request.Payload,Utils.ConverterSettings);
+            Payload = JsonConvert.SerializeObject(request.Request.Payload,Utils.ConverterSettingsSnake);
             AliceCommand = new AliceCommand(request);
         }
         
         private void FromAlexa(string body)
         {
-            throw new NotImplementedException();
+            AlexaRequest request = JsonConvert.DeserializeObject<AlexaRequest>(body,Utils.ConverterSettingsCamel);
+
+            Id = request.Request.RequestId;
+            User = new User(request.Session.User);
+            Text = "";
+            Payload = "";
+            AlexaCommand = new AlexaCommand(request);
         }
 
         public bool Check(CommandContent content, Locale locale)
@@ -104,6 +115,14 @@ namespace Triglav.Entities
                 if (content.IsEnter) return Text.StartsWith("/start");
                 if (content.Text == null) return Payload == content.Payload;
                 return content.Text[locale] == Text;
+            }
+
+
+            if (AlexaCommand != null)
+            {
+                Utils.CheckLocale(Layer.Alexa, locale);
+                if (content.IsEnter) return AlexaCommand.IsLaunchIntent;
+                return AlexaCommand.Check(content);
             }
 
             throw new ArgumentException("None of layers data were assigned");
