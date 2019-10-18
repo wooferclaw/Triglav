@@ -16,10 +16,9 @@ namespace Triglav.Layers.Alexa
 
         public AlexaCommand(AlexaIntentRequest request)
         {
-            IntentName = request.Request?.Intent?.Name??"";
-            ConfirmationStatus = request.Request?.Intent?.ConfirmationStatus??"";
-            Slots = request.Request.Intent.Slots.ToDictionary(x => x.Key,
-                                                              x => x.Value.Value);
+            IntentName = request.Request.Intent?.Name ?? "";
+            ConfirmationStatus = request.Request.Intent?.ConfirmationStatus ?? "";
+            Slots = request.Request.Intent?.Slots?.ToDictionary(x => x.Key, x => x.Value.Value);
             IsLaunchIntent = request.Request.Type == "LaunchRequest";
             IsSessionEnded = request.Request.Type == "SessionEndedRequest";
         }
