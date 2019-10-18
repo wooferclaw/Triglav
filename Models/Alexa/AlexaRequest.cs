@@ -52,10 +52,18 @@ namespace Triglav.Models.Alexa
     {
         public string Name { get; set; }
         public string ConfirmationStatus { get; set; }
-        public Dictionary<string,string> Slots { get; set; }
+        public Dictionary<string, Slot> Slots { get; set; }
     }
 
-    public class Request
+    public class Slot
+    {
+        public string Name { get; set; }
+        public string ConfirmationStatus { get; set; }
+        public string Source { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class IntentRequest
     {
         public string Type { get; set; }
         public string RequestId { get; set; }
@@ -65,12 +73,55 @@ namespace Triglav.Models.Alexa
         public Intent Intent { get; set; }
     }
 
-    public class AlexaRequest
+    public class LaunchRequest
+    {
+        public string Type { get; set; }
+        public string RequestId { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Locale { get; set; }
+    }
+
+    public class SessionEndedRequest
+    {
+        public string Type { get; set; }
+        public string RequestId { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Locale { get; set; }
+        public string Reason { get; set; }
+    }
+
+    public class AlexaIntentRequest
     {
         public string Version { get; set; }
         public Session Session { get; set; }
         public Context Context { get; set; }
-        public Request Request { get; set; }
+        public IntentRequest Request { get; set; }
     }
 
+    public class AlexaLaunchRequest
+    {
+        public string Version { get; set; }
+        public Session Session { get; set; }
+        public Context Context { get; set; }
+        public LaunchRequest Request { get; set; }
+    }
+
+    public class AlexaSessionEndedRequest
+    {
+        public string Version { get; set; }
+        public Session Session { get; set; }
+        public Context Context { get; set; }
+        public SessionEndedRequest Request { get; set; }
+    }
+
+    public class SimpleAlexaRequest
+    {
+        public string Version { get; set; }
+        public SimpleRequest Request { get; set; }
+    }
+
+    public class SimpleRequest
+    {
+        public string Type { get; set; }
+    }
 }

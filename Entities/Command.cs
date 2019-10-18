@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json;
 using Triglav.Layers.Alexa;
 using Triglav.Layers.Alice;
@@ -86,13 +87,46 @@ namespace Triglav.Entities
         
         private void FromAlexa(string body)
         {
-            AlexaRequest request = JsonConvert.DeserializeObject<AlexaRequest>(body,Utils.ConverterSettingsCamel);
+            var simpleRequest = JsonConvert.DeserializeObject<SimpleAlexaRequest>(body,Utils.ConverterSettingsCamel);
 
-            Id = request.Request.RequestId;
-            User = new User(request.Session.User);
-            Text = "";
-            Payload = "";
-            AlexaCommand = new AlexaCommand(request);
+            switch (simpleRequest.Request.Type)
+            {
+                case "LaunchRequest":
+                {
+                    var request = JsonConvert.DeserializeObject<AlexaLaunchRequest>(body, Utils.ConverterSettingsCamel);
+
+                    Id = request.Request.RequestId;
+                    User = new User(request.Session.User);
+                    Text = "";
+                    Payload = "";
+                    AlexaCommand = new AlexaCommand(request);
+                    break;
+                }
+                case "IntentRequest":
+                {
+                    var request = JsonConvert.DeserializeObject<AlexaIntentRequest>(body, Utils.ConverterSettingsCamel);
+
+                    Id = request.Request.RequestId;
+                    User = new User(request.Session.User);
+                    Text = request.Request?.Intent?.Slots != null && request.Request.Intent.Slots.Keys.Count > 0
+                        ? request.Request.Intent.Slots.First().Value.Value
+                        : "";
+                    Payload = "";
+                    AlexaCommand = new AlexaCommand(request);
+                    break;
+                }
+                case "SessionEndedRequest":
+                {
+                    var request = JsonConvert.DeserializeObject<AlexaSessionEndedRequest>(body, Utils.ConverterSettingsCamel);
+
+                    Id = request.Request.RequestId;
+                    User = new User(request.Session.User);
+                    Text = "";
+                    Payload = "";
+                    AlexaCommand = new AlexaCommand(request);
+                    break;
+                }
+            }
         }
 
         public bool Check(CommandContent content, Locale locale)
