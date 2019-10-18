@@ -149,7 +149,7 @@ namespace Triglav.Entities
             OutputSpeech outputSpeech;
 
             outputSpeech = Content.AlexaMessageContent.Ssml != null ?
-                new OutputSpeech {Type = "SSML", SSML = Content.AlexaMessageContent.Ssml} :
+                new OutputSpeech {Type = "SSML", SSML = $"<speak>{Content.AlexaMessageContent.Ssml}</speak>" } :
                 new OutputSpeech { Type = "PlainText", Text = Content.Text[locale]};
 
             if (Content.AlexaMessageContent.Reprompt)
