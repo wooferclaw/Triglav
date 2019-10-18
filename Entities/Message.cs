@@ -21,26 +21,31 @@ namespace Triglav.Entities
 
         private Command Command { get; set; }
 
-        public string As(Engine.Layer layer)
+        public string As(Layer layer, Locale locale)
         {
+            Utils.CheckLocale(layer, locale);
+            
             return layer switch
             {
-                Engine.Layer.Telegram => AsTelegram(),
-                Engine.Layer.Alice => AsAlice(),
-                Engine.Layer.Alexa => AsAlexa(),
-                _ => throw new ArgumentException("This layer type is not supported")
+                Layer.Telegram => AsTelegram(locale),
+                Layer.Alice => AsAlice(),
+                Layer.Alexa => AsAlexa(),
+                _ => throw new ArgumentOutOfRangeException(nameof(layer), "This layer type is not supported")
             };
         }
 
         private string AsAlice()
         {
-            if (Command == null) throw new ArgumentException("Message should respond to incoming command!");
+            if (Command == null)
+            {
+                throw new NullReferenceException("Message should respond to incoming command!");
+            }
 
             var response = new AliceResponse
             {
                 Response = new Response()
                 {
-                    Text = Content.Text,
+                    Text = Content.Text[Locale.Ru],
                     Buttons = new List<Button>(),
                 },
                 Session = Command.AliceCommand.Session,
@@ -54,7 +59,7 @@ namespace Triglav.Entities
 
             if (Content.Buttons != null)
             {
-                response.Response.Buttons = Content.Buttons.Select(x => new Button
+                response.Response.Buttons = Content.Buttons[Locale.Ru].Select(x => new Button
                 {
                     Title = x,
                     Hide = !Content.InlineButtons
@@ -64,14 +69,14 @@ namespace Triglav.Entities
             return JsonConvert.SerializeObject(response, Utils.ConverterSettings);
         }
 
-        private string AsTelegram()
+        private string AsTelegram(Locale locale)
         {
             
             var response = new TelegramSendMessage()
             {
                 Method = "sendMessage",
                 ChatId = int.Parse(User.Id),
-                Text = Content.Text,
+                Text = Content.Text[locale],
             };
 
             var buttons = new List<List<string>>();
@@ -84,7 +89,7 @@ namespace Triglav.Entities
 
             //if (Command!= null)
             //    response.ReplyToMessageId = int.Parse(Command.Id);
-            if (Content.Buttons != null && Content.Buttons.Length != 0)
+            if (Content.Buttons != null && Content.Buttons[locale].Length != 0)
             {
                 if (telegramMessageContent.ButtonsByRows != null)
                 {
@@ -94,13 +99,13 @@ namespace Triglav.Entities
                         buttons.Add(new List<string>());
                         for (var i = 0; i < row; i++)
                         {
-                            buttons.Last().Add(Content.Buttons[c++]);
+                            buttons.Last().Add(Content.Buttons[locale][c++]);
                         }
                     }
                 }
                 else
                 {
-                    buttons.Add(Content.Buttons.ToList());
+                    buttons.Add(Content.Buttons[locale].ToList());
                 }
             }
 

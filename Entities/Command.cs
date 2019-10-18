@@ -15,26 +15,23 @@ namespace Triglav.Entities
         public AliceCommand AliceCommand { get; set; }
         public TelegramCommand TelegramCommand { get; set; }
         
-
-        public Command(Engine.Layer layer, string body)
+        public Command(Layer layer, string body)
         {
             switch (layer)
             {
-                case Engine.Layer.Alice:
+                case Layer.Alice:
                     FromAlice(body);
                     break;
-                case Engine.Layer.Alexa:
+                case Layer.Alexa:
                     FromAlexa(body);
                     break;
-                case Engine.Layer.Telegram:
+                case Layer.Telegram:
                     FromTelegram(body);
                     break;
-                case Engine.Layer.VK:
+                case Layer.VK:
                     throw new NotImplementedException();
-                    break;
-                case Engine.Layer.Facebook:
+                case Layer.Facebook:
                     throw new NotImplementedException();
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(layer), layer, null);
             }
@@ -43,8 +40,7 @@ namespace Triglav.Entities
         //make from static or ctor
         private void FromTelegram(string body)
         {
-            
-            TelegramUpdate update = JsonConvert.DeserializeObject<TelegramUpdate>(body,Utils.ConverterSettings);
+            TelegramUpdate update = JsonConvert.DeserializeObject<TelegramUpdate>(body, Utils.ConverterSettings);
 
             switch (update.Type)
             {
@@ -82,23 +78,32 @@ namespace Triglav.Entities
             Payload = JsonConvert.SerializeObject(request.Request.Payload,Utils.ConverterSettings);
             AliceCommand = new AliceCommand(request);
         }
-        private Command FromAlexa(string body)
+        
+        private void FromAlexa(string body)
         {
-            return this;
+            throw new NotImplementedException();
         }
 
-        public bool Check(CommandContent content)
+        public bool Check(CommandContent content, Locale locale)
         {
+            if (content.Text != null && !content.Text.ContainsKey(locale))
+            {
+                throw new ArgumentException("Locale is not supported");
+            }
+            
             if (AliceCommand != null)
             {
+                Utils.CheckLocale(Layer.Alice, locale);
                 if (content.IsEnter) return string.IsNullOrEmpty(AliceCommand.Command);
                 return AliceCommand.Check(content);
             }
 
             if (TelegramCommand != null)
             {
+                Utils.CheckLocale(Layer.Telegram, locale);
                 if (content.IsEnter) return Text.StartsWith("/start");
-                return Payload == content.Payload || Text == content.Text;
+                if (content.Text == null) return Payload == content.Payload;
+                return content.Text[locale] == Text;
             }
 
             throw new ArgumentException("None of layers data were assigned");

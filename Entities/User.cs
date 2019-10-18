@@ -1,8 +1,7 @@
 ﻿using System;
-using Triglav.Entities;
 using Triglav.Models;
 
-namespace Triglav
+namespace Triglav.Entities
 {
     public class User
     {

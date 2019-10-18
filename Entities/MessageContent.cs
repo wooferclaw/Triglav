@@ -1,11 +1,12 @@
-﻿using Triglav.Layers;
+﻿using System.Collections.Generic;
+using Triglav.Layers;
 
 namespace Triglav.Entities
 {
     public class MessageContent
     {
-        public string Text { get; set; }
-        public string[] Buttons { get; set; }
+        public Dictionary<Locale, string> Text { get; set; }
+        public Dictionary<Locale, string[]> Buttons { get; set; }
         public bool InlineButtons { get; set; }
 
         public AliceMessageContent AliceMessageContent { get; set; }

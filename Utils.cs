@@ -75,9 +75,40 @@ namespace Triglav
                 return expectedTokens.All(tokens.ContainsStartWith);
             });
         }
+        
         public static bool ContainsStartWith(this IEnumerable<string> list, string start)
         {
             return list.Any(element => element.ToLower().Trim().StartsWith(start));
+        }
+        
+        public static void CheckLocale(Layer layer, Locale locale)
+        {
+            Locale[] supportedLocales;
+            switch (layer)
+            {
+                case Layer.Alice:
+                    supportedLocales = new[] {Locale.Ru};
+                    break;
+                case Layer.Alexa:
+                    supportedLocales = new[] {Locale.En};
+                    break;
+                case Layer.Telegram:
+                    supportedLocales = new[] {Locale.Ru, Locale.En};
+                    break;
+                case Layer.VK:
+                    supportedLocales = new[] {Locale.Ru, Locale.En};
+                    break;
+                case Layer.Facebook:
+                    supportedLocales = new[] {Locale.Ru, Locale.En};
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(layer), layer, null);
+            }
+
+            if (!supportedLocales.Contains(locale))
+            {
+                throw new ArgumentOutOfRangeException(nameof(locale), "Locale is not supported on this layer");
+            }
         }
     }
 }
