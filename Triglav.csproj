@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <Authors>Grigory Fratsuzov, Denis Peshekhonov</Authors>
+    <Description>Multiplatform bot library targeted on voice assistants</Description>
+    <Copyright>2019</Copyright>
+    <PackageProjectUrl>https://github.com/wooferclaw/Triglav</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/wooferclaw/Triglav</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageTags>Bot, Voice</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
