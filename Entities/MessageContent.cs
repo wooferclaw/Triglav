@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using Microsoft.VisualBasic.CompilerServices;
 using Triglav.Layers.Alexa;
 using Triglav.Layers.Alice;
 using Triglav.Layers.Telegram;
+using Triglav.Models.Alexa;
 
 namespace Triglav.Entities
 {
@@ -14,5 +16,25 @@ namespace Triglav.Entities
         public AliceMessageContent AliceMessageContent { get; set; }
         public AlexaMessageContent AlexaMessageContent { get; set; }
         public TelegramMessageContent TelegramMessageContent { get; set; }
+
+        public OutputSpeech AsOutputSpeech(Locale locale)
+        {
+            if (AlexaMessageContent.Ssml != null)
+            {
+                return new OutputSpeech
+                {
+                    SSML = $"<speak>{AlexaMessageContent.Ssml}</speak>",
+                    Type = "SSML",
+                    PlayBehavior = "REPLACE_ALL"
+                };
+            }
+
+            return new OutputSpeech
+            {
+                Text = Text[locale],
+                Type = "PlainText",
+                PlayBehavior = "REPLACE_ALL"
+            };
+        }
     }
 }

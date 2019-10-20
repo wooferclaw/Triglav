@@ -146,21 +146,14 @@ namespace Triglav.Entities
                 Response = new Models.Alexa.Response()
             };
 
-            OutputSpeech outputSpeech;
+            var outputSpeech = Content.AsOutputSpeech(locale);
 
-            outputSpeech = Content.AlexaMessageContent.Ssml != null ?
-                new OutputSpeech {Type = "SSML", SSML = $"<speak>{Content.AlexaMessageContent.Ssml}</speak>" } :
-                new OutputSpeech { Type = "PlainText", Text = Content.Text[locale]};
-
-            if (Content.AlexaMessageContent.Reprompt)
+            if (Content.AlexaMessageContent.Reprompt != null)
             {
                 response.Response.Reprompt = new Reprompt {OutputSpeech = outputSpeech};
             }
-            else
-            {
-                response.Response.OutputSpeech = outputSpeech;
-            }
-
+            response.Response.OutputSpeech = outputSpeech;
+            
             response.Version = Command.AlexaCommand.Version;
             response.Response.ShouldEndSession = Content.AlexaMessageContent.ShouldEndSession;
 
