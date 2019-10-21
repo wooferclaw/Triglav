@@ -8,6 +8,8 @@ namespace Triglav
 {
     public static class Utils
     {
+        public static string SoundBankPattern = @"\[[^\[\]]+\]";
+
         public static readonly JsonSerializerSettings ConverterSettingsSnake = new JsonSerializerSettings
         {
             ContractResolver = new DefaultContractResolver

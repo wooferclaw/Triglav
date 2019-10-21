@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Triglav.Layers;
 using Triglav.Layers.Telegram;
 using Triglav.Models.Alexa;
 using Triglav.Models.Alice;
@@ -158,6 +160,75 @@ namespace Triglav.Entities
             response.Response.ShouldEndSession = Content.AlexaMessageContent.ShouldEndSession;
 
             return JsonConvert.SerializeObject(response, Utils.ConverterSettingsCamel); 
+        }
+
+        public string AsAliceTts(Locale locale, SoundBank soundBank = null)
+        {
+            soundBank ??= SoundBank.DefaultSoundBank;
+
+            var regex = new Regex(Utils.SoundBankPattern);
+            var matches = regex.Matches(Content.Text[locale]);
+
+            var result = Content.Text[locale];
+
+            for (int i = 0; i < matches.Count; i++)
+            {
+                var match = matches[i];
+                var genTts = match.Value.TrimStart('[').TrimEnd(']').Split('|');
+
+                if (genTts[0] == "audio")
+                {
+                    result = result.Replace(match.Value, $"<speaker audio=\"{soundBank.Get(Layer.Alice, genTts[1])}\">");
+                }
+                if (genTts[0] == "pause")
+                {
+                    //TODO ---CHECK DOCUMENTATION!---
+                    result = result.Replace(match.Value, $"<sil[{genTts[1]}]>");
+                }
+                if (genTts[0] == "accent")
+                {
+                    result = result.Replace(match.Value, "+");
+                }
+            }
+
+            return result;
+        }
+
+        public string AsAlexaSsml(Locale locale, SoundBank soundBank = null)
+        {
+            soundBank ??= SoundBank.DefaultSoundBank;
+
+            var regex = new Regex(Utils.SoundBankPattern);
+            var matches = regex.Matches(Content.Text[locale]);
+
+            var result = Content.Text[locale];
+
+            for (int i = 0; i < matches.Count; i++)
+            {
+                var match = matches[i];
+                var genTts = match.Value.TrimStart('[').TrimEnd(']').Split('|');
+
+                if (genTts[0] == "audio")
+                {
+                    result = result.Replace(match.Value, $"<audio src=\"{soundBank.Get(Layer.Alexa,genTts[1])}\">");
+                }
+                if (genTts[0] == "pause")
+                {
+                    //TODO ---CHECK DOCUMENTATION!---
+                    result = result.Replace(match.Value, $"<break time=\"{genTts[1]}\">");
+                }
+                if (genTts[0] == "accent")
+                {
+                    result = result.Replace(match.Value, ""); 
+                }
+            }
+
+            return result;
+        }
+        public string AsText(Locale locale)
+        {
+            var regex = new Regex(Utils.SoundBankPattern);
+            return regex.Replace(Content.Text[locale],"");
         }
     }
 }

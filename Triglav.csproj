@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Grigory Fratsuzov, Denis Peshekhonov</Authors>
     <Description>Multiplatform bot library targeted on voice assistants</Description>
     <Copyright>2019</Copyright>
