@@ -150,14 +150,14 @@ namespace Triglav.Entities
 
             var outputSpeech = Content.AsOutputSpeech(locale);
 
-            if (Content.AlexaMessageContent.Reprompt != null)
+            if (Content.AlexaMessageContent?.Reprompt != null)
             {
                 response.Response.Reprompt = new Reprompt {OutputSpeech = outputSpeech};
             }
             response.Response.OutputSpeech = outputSpeech;
             
             response.Version = Command.AlexaCommand.Version;
-            response.Response.ShouldEndSession = Content.AlexaMessageContent.ShouldEndSession;
+            response.Response.ShouldEndSession = Content.AlexaMessageContent?.ShouldEndSession == true;
 
             return JsonConvert.SerializeObject(response, Utils.ConverterSettingsCamel); 
         }

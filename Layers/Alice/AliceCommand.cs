@@ -22,7 +22,8 @@ namespace Triglav.Layers.Alice
 
         public bool Check(CommandContent content)
         {
-            return Utils.CheckTokens(Tokens, content.AliceCommandContent.Keywords.ToArray());
+            return content.AliceCommandContent?.Keywords != null 
+                   && Utils.CheckTokens(Tokens, content.AliceCommandContent.Keywords.ToArray());
         }
     }
 }

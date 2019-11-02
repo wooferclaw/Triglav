@@ -40,10 +40,10 @@ namespace Triglav.Layers.Alexa
         }
         public bool Check(CommandContent content)
         {
-            if (content.AlexaCommandContent.IntentName != null)
+            if (content.AlexaCommandContent?.IntentName != null)
                 return IntentName == content.AlexaCommandContent.IntentName;
 
-            if (Slots == null || content.AlexaCommandContent.Slots == null) return false;
+            if (Slots == null || content.AlexaCommandContent?.Slots == null) return false;
 
             return content.AlexaCommandContent.Slots.Keys.All(key => Slots.ContainsKey(key));
         }

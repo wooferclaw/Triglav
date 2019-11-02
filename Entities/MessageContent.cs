@@ -19,7 +19,7 @@ namespace Triglav.Entities
 
         public OutputSpeech AsOutputSpeech(Locale locale)
         {
-            if (AlexaMessageContent.Ssml != null)
+            if (AlexaMessageContent?.Ssml != null)
             {
                 return new OutputSpeech
                 {

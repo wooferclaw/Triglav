@@ -151,7 +151,6 @@ namespace Triglav.Entities
                 return content.Text[locale] == Text;
             }
 
-
             if (AlexaCommand != null)
             {
                 Utils.CheckLocale(Layer.Alexa, locale);
