@@ -22,6 +22,13 @@ namespace Triglav.Entities
             Command = command;
             Content = messageContent;
         }
+        
+        public Message(MessageContent messageContent, Command command)
+        {
+            User = command.User;
+            Command = command;
+            Content = messageContent;
+        }
 
         private Command Command { get; set; }
 
