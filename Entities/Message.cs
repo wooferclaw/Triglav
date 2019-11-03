@@ -140,9 +140,7 @@ namespace Triglav.Entities
                             RequestLocation = false
                         }
                     )
-                ));
-
-                ((ReplyKeyboardMarkup) response.ReplyMarkup).OneTimeKeyboard = telegramMessageContent.OneTimeKeyboard;
+                ), true, telegramMessageContent.OneTimeKeyboard);
             }
 
             return JsonConvert.SerializeObject(response, Utils.ConverterSettingsSnake);
