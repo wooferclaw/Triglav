@@ -148,7 +148,7 @@ namespace Triglav.Entities
                 Utils.CheckLocale(Layer.Telegram, locale);
                 if (content.IsEnter) return Text.StartsWith("/start");
                 if (content.Text == null) return Payload == content.Payload;
-                return content.Text[locale] == Text;
+                return content.Text[locale].ToLower() == Text.ToLower();
             }
 
             if (AlexaCommand != null)
