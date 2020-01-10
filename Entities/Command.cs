@@ -146,7 +146,7 @@ namespace Triglav.Entities
             if (TelegramCommand != null)
             {
                 Utils.CheckLocale(Layer.Telegram, locale);
-                if (content.IsEnter) return Text.StartsWith("/start");
+                if (content.IsEnter) return Text != null && Text.StartsWith("/start");
                 if (content.Text == null) return Payload == content.Payload;
                 return content.Text[locale].ToLower() == Text.ToLower();
             }
